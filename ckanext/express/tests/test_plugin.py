@@ -393,10 +393,14 @@ class TestUpToNEditorsPlugin(object):
         organization = factories.Organization(user=organization_admin)
         editor = factories.User()
 
-        helpers.call_action(
-            'organization_member_create',
-            context={'user': organization_admin['name']},
-            id=organization['id'], username=editor['name'], role='editor')
+        url = toolkit.url_for(controller='api',
+                              logic_function='organization_member_create',
+                              action='action', ver=3)
+        data_dict = {'id': organization['id'], 'username': editor['name'],
+                     'role': 'editor'}
+        response = self.app.post_json(
+            url, data_dict,
+            extra_environ={'REMOTE_USER': str(organization_admin['name'])})
 
         members = helpers.call_action('member_list', id=organization['id'])
         assert (editor['id'], 'user', 'Editor') in members
@@ -460,10 +464,14 @@ class TestUpToNEditorsPlugin(object):
 
         # At this point we have 4 "editors" (one admin and three editors)
         # and max_editors is 5, so we should be allowed to add one more editor.
-        helpers.call_action(
-            'organization_member_create',
-            context={'user': organization_admin['name']},
-            id=organization['id'], username=editor_4['name'], role='editor')
+        url = toolkit.url_for(controller='api',
+                              logic_function='organization_member_create',
+                              action='action', ver=3)
+        data_dict = {'id': organization['id'], 'username': editor_4['name'],
+                     'role': 'editor'}
+        response = self.app.post_json(
+            url, data_dict,
+            extra_environ={'REMOTE_USER': str(organization_admin['name'])})
 
         members = helpers.call_action('member_list', id=organization['id'])
         assert (organization_admin['id'], 'user', 'Admin') in members
