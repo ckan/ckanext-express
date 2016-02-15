@@ -27,5 +27,7 @@ setup(
         # Add plugins here, e.g.
         up_to_n_editors=ckanext.express.plugin:UpToNEditorsPlugin
         customizable_featured_image=ckanext.express.customizable_featured_image:CustomizableFeaturedImagePlugin
+        express=ckanext.express.plugin:ExpressPlugin
+
     ''',
 )

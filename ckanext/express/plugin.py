@@ -108,3 +108,9 @@ class UpToNEditorsPlugin(plugins.SingletonPlugin):
 
     def get_auth_functions(self):
         return {'member_create': member_create}
+
+class ExpressPlugin(plugins.SingletonPlugin):
+    plugins.implements(plugins.IConfigurer)
+
+    def update_config(self, config):
+        toolkit.add_resource('fanstatic', 'ckanext-express')
